@@ -9,79 +9,52 @@
   animation: flicker 2s infinite steps(100);
 }
 
-/* duplicate layers for RGB split */
+/* Outline/cloned layers */
 .glitch::before,
 .glitch::after {
   content: attr(data-text);
   position: absolute;
   top: 0; left: 0;
   width: 100%;
+  color: transparent; /* base is invisible, only shadows show */
   overflow: hidden;
 }
 
 .glitch::before {
-  color: #f0f;
-  left: 2px;
-  text-shadow: -2px 0 red;
-  animation: glitch-bar 1s infinite steps(15, end), vertical-jump 0.8s infinite steps(5, end);
+  text-shadow: -2px 0 #f0f, 2px 0 #0ff; /* magenta & cyan on edges */
+  animation: glitch-slice 1s infinite steps(20, end);
 }
 
 .glitch::after {
-  color: #0ff;
-  left: -2px;
-  text-shadow: 2px 0 lime;
-  animation: glitch-bar2 1.3s infinite steps(20, end), vertical-jump 1s infinite steps(7, end);
+  text-shadow: 2px 2px #0f0, -2px -2px #f00; /* lime & red on edges */
+  animation: glitch-slice2 1.3s infinite steps(25, end);
 }
 
-/* === KEYFRAMES === */
+/* --- Keyframes --- */
 
-/* Sudden opacity flicker like CRT */
+/* Random flicker */
 @keyframes flicker {
   0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 1; }
-  20%, 24%, 55% { opacity: 0; }
+  20%, 24%, 55% { opacity: 0.3; }
 }
 
-/* Horizontal cut-off "bars" (layer 1) */
-@keyframes glitch-bar {
-  0%   { clip: rect(10px, 9999px, 20px, 0); }
-  10%  { clip: rect(40px, 9999px, 60px, 0); }
-  20%  { clip: rect(80px, 9999px, 100px, 0); }
-  30%  { clip: rect(55px, 9999px, 65px, 0); }
-  40%  { clip: rect(5px, 9999px, 25px, 0); }
-  50%  { clip: rect(45px, 9999px, 70px, 0); }
-  60%  { clip: rect(15px, 9999px, 35px, 0); }
-  70%  { clip: rect(65px, 9999px, 90px, 0); }
-  80%  { clip: rect(25px, 9999px, 40px, 0); }
-  90%  { clip: rect(75px, 9999px, 95px, 0); }
-  100% { clip: rect(35px, 9999px, 55px, 0); }
+/* Horizontal bar slices (layer 1) */
+@keyframes glitch-slice {
+  0%   { clip: rect(5px, 9999px, 15px, 0); }
+  15%  { clip: rect(30px, 9999px, 45px, 0); }
+  30%  { clip: rect(60px, 9999px, 75px, 0); }
+  45%  { clip: rect(10px, 9999px, 25px, 0); }
+  60%  { clip: rect(50px, 9999px, 65px, 0); }
+  75%  { clip: rect(20px, 9999px, 35px, 0); }
+  100% { clip: rect(70px, 9999px, 85px, 0); }
 }
 
-/* Horizontal cut-off "bars" (layer 2) */
-@keyframes glitch-bar2 {
-  0%   { clip: rect(60px, 9999px, 80px, 0); }
-  10%  { clip: rect(20px, 9999px, 35px, 0); }
-  20%  { clip: rect(70px, 9999px, 85px, 0); }
-  30%  { clip: rect(15px, 9999px, 25px, 0); }
-  40%  { clip: rect(50px, 9999px, 65px, 0); }
-  50%  { clip: rect(5px, 9999px, 18px, 0); }
-  60%  { clip: rect(85px, 9999px, 100px, 0); }
-  70%  { clip: rect(30px, 9999px, 45px, 0); }
-  80%  { clip: rect(10px, 9999px, 25px, 0); }
-  90%  { clip: rect(60px, 9999px, 75px, 0); }
-  100% { clip: rect(40px, 9999px, 58px, 0); }
-}
-
-/* CRT vertical desync/jump */
-@keyframes vertical-jump {
-  0%   { transform: translateY(0); }
-  10%  { transform: translateY(-3px); }
-  20%  { transform: translateY(2px); }
-  30%  { transform: translateY(-1px); }
-  40%  { transform: translateY(4px); }
-  50%  { transform: translateY(0); }
-  60%  { transform: translateY(-2px); }
-  70%  { transform: translateY(3px); }
-  80%  { transform: translateY(-4px); }
-  90%  { transform: translateY(1px); }
-  100% { transform: translateY(0); }
+/* Horizontal bar slices (layer 2) */
+@keyframes glitch-slice2 {
+  0%   { clip: rect(40px, 9999px, 55px, 0); }
+  20%  { clip: rect(15px, 9999px, 35px, 0); }
+  40%  { clip: rect(65px, 9999px, 85px, 0); }
+  60%  { clip: rect(5px, 9999px, 20px, 0); }
+  80%  { clip: rect(55px, 9999px, 72px, 0); }
+  100% { clip: rect(25px, 9999px, 40px, 0); }
 }
