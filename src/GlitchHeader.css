@@ -9,66 +9,75 @@
   animation: glitch-skew 1s infinite linear alternate-reverse;
 }
 
-/* glitch layers */
+/* Create extra colored "layers" */
 .glitch::before,
 .glitch::after {
   content: attr(data-text);
   position: absolute;
-  left: 0;
   top: 0;
   width: 100%;
-  color: #f0f; /* magenta side */
+  left: 0;
   overflow: hidden;
   clip: rect(0, 900px, 0, 0);
 }
 
 .glitch::before {
-  left: 2px;
-  text-shadow: -2px 0 red;
+  left: 3px;
+  text-shadow: -3px 0 #ff00ff, 2px 2px #00ffff;
   animation: glitch-anim 2s infinite linear alternate-reverse;
 }
 
 .glitch::after {
-  left: -2px;
-  text-shadow: 2px 0 cyan;
-  animation: glitch-anim2 3s infinite linear alternate-reverse;
+  left: -3px;
+  text-shadow: 3px 0 #00ff00, -2px -2px #ff0000;
+  animation: glitch-anim2 1.5s infinite linear alternate-reverse;
 }
 
-/* Base skew flicker */
+/* Add one more multi‑color overlay */
+.glitch::marker,
+.glitch span.glitch-extra {
+  content: attr(data-text);
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: #ffff00;
+  text-shadow: 2px 2px #ff6600, -2px -1px #00ffcc;
+  animation: glitch-anim3 2.5s infinite linear alternate-reverse;
+  z-index: -1;
+}
+
+/* Skew jitter */
 @keyframes glitch-skew {
-  0% { transform: skew(0deg); }
-  20% { transform: skew(3deg); }
-  25% { transform: skew(-3deg); }
-  30% { transform: skew(0deg); }
+  0%   { transform: skew(0deg); }
+  20%  { transform: skew(3deg); }
+  25%  { transform: skew(-2deg); }
+  30%  { transform: skew(0deg); }
   100% { transform: skew(0deg); }
 }
 
-/* Layer 1 flicker */
+/* Random clip flickers */
 @keyframes glitch-anim {
-  0% { clip: rect(42px, 9999px, 44px, 0); }
-  10% { clip: rect(12px, 9999px, 64px, 0); }
-  20% { clip: rect(22px, 9999px, 24px, 0); }
-  30% { clip: rect(52px, 9999px, 74px, 0); }
-  40% { clip: rect(12px, 9999px, 14px, 0); }
-  50% { clip: rect(92px, 9999px, 94px, 0); }
-  60% { clip: rect(72px, 9999px, 74px, 0); }
-  70% { clip: rect(32px, 9999px, 34px, 0); }
-  80% { clip: rect(12px, 9999px, 14px, 0); }
-  90% { clip: rect(42px, 9999px, 44px, 0); }
-  100% { clip: rect(82px, 9999px, 84px, 0); }
+  0% { clip: rect(44px, 9999px, 56px, 0); }
+  10% { clip: rect(12px, 9999px, 32px, 0); }
+  30% { clip: rect(72px, 9999px, 94px, 0); }
+  50% { clip: rect(22px, 9999px, 48px, 0); }
+  70% { clip: rect(82px, 9999px, 100px, 0); }
+  100% { clip: rect(12px, 9999px, 20px, 0); }
 }
 
-/* Layer 2 flicker */
 @keyframes glitch-anim2 {
-  0% { clip: rect(12px, 9999px, 14px, 0); }
-  10% { clip: rect(72px, 9999px, 74px, 0); }
-  20% { clip: rect(42px, 9999px, 44px, 0); }
-  30% { clip: rect(12px, 9999px, 14px, 0); }
-  40% { clip: rect(92px, 9999px, 94px, 0); }
-  50% { clip: rect(22px, 9999px, 24px, 0); }
-  60% { clip: rect(32px, 9999px, 34px, 0); }
-  70% { clip: rect(52px, 9999px, 54px, 0); }
-  80% { clip: rect(22px, 9999px, 24px, 0); }
-  90% { clip: rect(62px, 9999px, 64px, 0); }
-  100% { clip: rect(82px, 9999px, 84px, 0); }
+  0% { clip: rect(12px, 9999px, 24px, 0); }
+  20% { clip: rect(48px, 9999px, 68px, 0); }
+  40% { clip: rect(22px, 9999px, 38px, 0); }
+  60% { clip: rect(62px, 9999px, 80px, 0); }
+  80% { clip: rect(42px, 9999px, 58px, 0); }
+  100% { clip: rect(92px, 9999px, 110px, 0); }
+}
+
+@keyframes glitch-anim3 {
+  0% { clip: rect(5px, 9999px, 20px, 0); }
+  25% { clip: rect(45px, 9999px, 70px, 0); }
+  50% { clip: rect(15px, 9999px, 40px, 0); }
+  75% { clip: rect(65px, 9999px, 90px, 0); }
+  100% { clip: rect(25px, 9999px, 55px, 0); }
 }
