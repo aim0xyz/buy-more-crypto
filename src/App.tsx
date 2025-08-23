@@ -2,23 +2,28 @@ import React from 'react'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { WalletMultiButton } from '@solana/wallet-adapter-react-ui'
 
-// Import the wallet adapter UI CSS once so styles work
+// Import wallet styles
 import '@solana/wallet-adapter-react-ui/styles.css'
+
+import PowerLevel from './PowerLevel'
 
 const App: React.FC = () => {
   const { publicKey } = useWallet()
 
   return (
     <div style={styles.container}>
-      <h1 style={styles.heading}>🚀 Buy More Crypto DApp</h1>
+      <h1 style={styles.heading}>🚀 Buy More Crypto: The Hodler's Quest</h1>
 
-      {/* Connect Wallet Button (handled by SolanaProvider) */}
+      {/* Wallet Connect */}
       <WalletMultiButton />
 
       {publicKey ? (
-        <p style={styles.text}>
-          ✅ Connected to wallet: <strong>{publicKey.toBase58()}</strong>
-        </p>
+        <>
+          <p style={styles.text}>
+            ✅ Connected to wallet: <strong>{publicKey.toBase58()}</strong>
+          </p>
+          <PowerLevel /> {/* <-- show Power Level inside app */}
+        </>
       ) : (
         <p style={styles.text}>🔌 Wallet not connected</p>
       )}
@@ -26,7 +31,7 @@ const App: React.FC = () => {
   )
 }
 
-// Inline styles for quick testing (swap out for CSS if you want)
+// Inline styles
 const styles: Record<string, React.CSSProperties> = {
   container: {
     fontFamily: 'Inter, sans-serif',
