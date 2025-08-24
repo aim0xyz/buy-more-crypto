@@ -79,6 +79,12 @@ const App: React.FC = () => {
             </p>
             <PowerLevel />
 
+            {/* --- My Points --- */}
+            <section id="my-points">
+              <h2>💰 My Points</h2>
+              <p>You have {playerPoints} points</p>
+            </section>
+
             {/* --- Missions --- */}
             <section id="missions">
               <h2>🎯 Missions</h2>
