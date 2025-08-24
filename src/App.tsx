@@ -15,7 +15,7 @@ const App: React.FC = () => {
   const { publicKey } = useWallet()
 
   // --- Points & Leaderboard state ---
-  const [playerPoints, setPlayerPoints] = useState(0)
+  const [playerPoints, setPlayerPoints] = useState(0) // This state is now used
   const [leaderboard, setLeaderboard] = useState<Player[]>([
     { name: "Wallet 0x123…", points: 3200 },
     { name: "Wallet 0x456…", points: 2990 },
@@ -39,7 +39,7 @@ const App: React.FC = () => {
   function claimTask(id: string, points: number) {
     if (completed.includes(id)) return
     setCompleted([...completed, id])
-    setPlayerPoints((prev) => prev + points)
+    setPlayerPoints((prev) => prev + points) // This correctly updates playerPoints
 
     setLeaderboard((prev) => {
       const walletName = publicKey ? publicKey.toBase58().slice(0, 6) + "…" : "You"
@@ -80,9 +80,10 @@ const App: React.FC = () => {
             <PowerLevel />
 
             {/* --- My Points --- */}
+            {/* FIX: Displaying playerPoints here makes it "read" */}
             <section id="my-points">
               <h2>💰 My Points</h2>
-              <p>You have {playerPoints} points</p>
+              <p>You have {playerPoints} points</p> 
             </section>
 
             {/* --- Missions --- */}
