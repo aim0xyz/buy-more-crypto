@@ -1,65 +1,98 @@
-.glitch {
-  position: relative;
-  font-size: 4rem;
-  font-weight: bold;
-  color: #fff; /* solid fill remains */
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  animation: flicker 1.5s infinite steps(50, end);
+/* === Import pixel font globally elsewhere (in index.html) === */
+/* font-family: 'Press Start 2P', monospace; */
+
+$offset: 6px;
+$bgcolor: #0e1117;
+
+@mixin animation($animate...) {
+  $max: length($animate);
+  $animations: '';
+
+  @for $i from 1 through $max {
+    $animations: #{$animations + nth($animate, $i)};
+    @if $i < $max { $animations: #{$animations + ", "}; }
+  }
+  -webkit-animation: $animations;
+  -moz-animation: $animations;
+  -o-animation: $animations;
+  animation: $animations;
 }
 
-/* --- Outline glitch layers --- */
+@mixin keyframes($animationName) {
+  @-webkit-keyframes #{$animationName} { @content; }
+  @-moz-keyframes #{$animationName} { @content; }
+  @-o-keyframes #{$animationName} { @content; }
+  @keyframes #{$animationName} { @content; }
+}
+
+/* === Base Glitch Text === */
+.glitch {
+  position: relative;
+  display: inline-block;
+  font-size: 4rem;
+  font-family: 'Press Start 2P', monospace;
+  font-weight: bold;
+  letter-spacing: 0.05em;
+  color: #fff;
+  text-transform: uppercase;
+
+  /* solid white stays still */
+  z-index: 1;
+
+  /* simple flicker on base */
+  @include animation(flicker 2s infinite steps(80));
+}
+
+/* === Colored glitch outlines === */
 .glitch::before,
 .glitch::after {
   content: attr(data-text);
   position: absolute;
-  top: 0; left: 0;
+  top: 0;
+  left: 0;
   width: 100%;
-  color: transparent;        /* no fill, only shadows */
+  color: transparent;
   overflow: hidden;
-  -webkit-text-stroke: 1px transparent; /* ensure outline only */
+  -webkit-text-stroke: 1px transparent;
+  z-index: -1;
 }
 
+/* magenta + cyan offset */
 .glitch::before {
-  text-shadow: -2px 0 #f0f, 2px 0 #0ff;   /* magenta + cyan outlines */
-  animation: glitch-outline1 0.8s infinite steps(20, end);
+  text-shadow: -$offset 0 #f0f, $offset 0 #0ff;
+  @include animation(glitch-slice1 1s infinite steps(15), flicker 1.5s infinite steps(50));
 }
 
+/* green + red offset */
 .glitch::after {
-  text-shadow: 2px -2px #0f0, -2px 2px #f00; /* green + red outlines */
-  animation: glitch-outline2 0.9s infinite steps(25, end);
+  text-shadow: $offset -$offset #0f0, -$offset $offset #f00;
+  @include animation(glitch-slice2 1.2s infinite steps(20), flicker 2s infinite steps(60));
 }
 
-/* --- Keyframes --- */
-
-/* Overall flickering (opacity) */
-@keyframes flicker {
-  0%, 18%, 20%, 22%, 25%, 53%, 55%, 100% { opacity: 1; }
-  19%, 21%, 23%, 54% { opacity: 0.5; }
+/* === Keyframes === */
+@include keyframes(flicker) {
+  0%, 18%, 22%, 25%, 54%, 100% { opacity: 1; }
+  19%, 23%, 55% { opacity: 0.45; }
 }
 
-/* Horizontal broken slices (layer 1) */
-@keyframes glitch-outline1 {
-  0%   { clip: rect(2px, 9999px, 8px, 0); }
-  10%  { clip: rect(15px, 9999px, 25px, 0); }
-  20%  { clip: rect(35px, 9999px, 45px, 0); }
-  30%  { clip: rect(5px, 9999px, 15px, 0); }
-  40%  { clip: rect(25px, 9999px, 40px, 0); }
-  50%  { clip: rect(10px, 9999px, 20px, 0); }
-  60%  { clip: rect(30px, 9999px, 50px, 0); }
-  70%  { clip: rect(8px, 9999px, 18px, 0); }
-  80%  { clip: rect(40px, 9999px, 55px, 0); }
-  100% { clip: rect(12px, 9999px, 32px, 0); }
+/* jagged slicing (layer 1) */
+@include keyframes(glitch-slice1) {
+  0%   { clip: rect(2px, 9999px, 10px, 0); }
+  15%  { clip: rect(20px, 9999px, 35px, 0); }
+  30%  { clip: rect(40px, 9999px, 55px, 0); }
+  50%  { clip: rect(8px, 9999px, 22px, 0); }
+  70%  { clip: rect(25px, 9999px, 40px, 0); }
+  85%  { clip: rect(60px, 9999px, 75px, 0); }
+  100% { clip: rect(15px, 9999px, 30px, 0); }
 }
 
-/* Horizontal broken slices (layer 2, offset differently) */
-@keyframes glitch-outline2 {
-  0%   { clip: rect(12px, 9999px, 22px, 0); }
-  15%  { clip: rect(45px, 9999px, 60px, 0); }
-  30%  { clip: rect(20px, 9999px, 30px, 0); }
-  45%  { clip: rect(5px, 9999px, 18px, 0); }
-  60%  { clip: rect(35px, 9999px, 48px, 0); }
-  75%  { clip: rect(15px, 9999px, 28px, 0); }
+/* jagged slicing (layer 2) */
+@include keyframes(glitch-slice2) {
+  0%   { clip: rect(12px, 9999px, 26px, 0); }
+  25%  { clip: rect(35px, 9999px, 48px, 0); }
+  40%  { clip: rect(5px, 9999px, 18px, 0); }
+  55%  { clip: rect(45px, 9999px, 60px, 0); }
+  75%  { clip: rect(22px, 9999px, 36px, 0); }
   90%  { clip: rect(55px, 9999px, 70px, 0); }
-  100% { clip: rect(25px, 9999px, 40px, 0); }
+  100% { clip: rect(10px, 9999px, 24px, 0); }
 }
